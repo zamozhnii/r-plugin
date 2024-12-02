@@ -1,24 +1,37 @@
-# plugins/redirect-404-to-home/plugin.rb
-# frozen_string_literal: true
+# name: redirect_404_to_home
+# about: Redirects all 404 errors to the home page
+# version: 0.1
+# authors: Your Name
+# url: https://github.com/yourusername/redirect_404_to_home
 
-enabled_site_setting :redirect_404_to_home
+enabled_site_setting :redirect_404_to_home_enabled
 
 after_initialize do
-  # Подключаемся к маршрутизации Discourse, чтобы перехватить ошибки 404
-  Discourse::Application.routes.append do
-    match '*path', to: 'application#not_found', via: :all
-  end
+  # Middleware для обработки ошибок 404
+  module ::Redirect404ToHome
+    class Middleware
+      def initialize(app)
+        @app = app
+      end
 
-  # Перехватываем метод not_found и перенаправляем на главную страницу
-  class ::ApplicationController
-    alias_method :original_not_found, :not_found
+      def call(env)
+        status, headers, response = @app.call(env)
 
-    def not_found
-      if request.format.html?
-        redirect_to root_path, status: 301
-      else
-        original_not_found
+        # Проверяем, является ли ошибка 404
+        if status == 404
+          # Создаем редирект на главную страницу с кодом 301
+          return [301, { 'Location' => '/' }, ['Moved Permanently']]
+        end
+
+        # Если ошибка не 404, возвращаем исходный ответ
+        [status, headers, response]
       end
     end
+  end
+
+  # Добавляем middleware в приложение Discourse
+  Discourse::Application.routes.append do
+    # Подключаем наш middleware
+    Rails.application.config.middleware.use ::Redirect404ToHome::Middleware
   end
 end

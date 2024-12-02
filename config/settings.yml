@@ -1,6 +1,4 @@
-# config/settings.yml
-redirect_404_to_home:
+redirect_404_to_home_enabled:
   default: true
-  client: false
-  description: "Перенаправлять страницы с ошибкой 404 на главную"
-  type: boolean
+  client: true
+  description: "Enable redirect of all 404 errors to the home page."
