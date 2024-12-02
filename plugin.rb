@@ -15,7 +15,7 @@ after_initialize do
       def call(env)
         status, headers, response = @app.call(env)
 
-        # Если ошибка 404, выполняем редирект на главную страницу
+        # Если ошибка 404, перенаправляем на главную страницу
         if status == 404
           return [301, { 'Location' => '/' }, ['Moved Permanently']]
         end
@@ -26,6 +26,6 @@ after_initialize do
     end
   end
 
-  # Добавляем наше middleware в цепочку, используя Rails.application.middleware
-  Rails.application.config.middleware.insert_after Rack::Sendfile, ::Redirect404ToHome::Middleware
+  # Используем хук для добавления middleware после инициализации
+  Discourse::Application.config.middleware.insert_after Rack::Sendfile, ::Redirect404ToHome::Middleware
 end
