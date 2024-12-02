@@ -5,7 +5,7 @@
 # url: https://github.com/zamozhnii/r_plugin.git
 
 after_initialize do
-  # Создаем middleware для обработки ошибок 404
+  # Определяем кастомное middleware для обработки 404 ошибок
   module ::Redirect404ToHome
     class Middleware
       def initialize(app)
@@ -15,20 +15,17 @@ after_initialize do
       def call(env)
         status, headers, response = @app.call(env)
 
-        # Если ответ - 404, перенаправляем на главную страницу
+        # Если ошибка 404, выполняем редирект на главную страницу
         if status == 404
           return [301, { 'Location' => '/' }, ['Moved Permanently']]
         end
 
-        # Если это не ошибка 404, возвращаем исходный ответ
+        # Возвращаем исходный ответ, если это не ошибка 404
         [status, headers, response]
       end
     end
   end
 
-  # Используем Rack::Builder для добавления middleware в цепочку
-  Discourse::Application.routes.append do
-    # Вставляем наше middleware в конец цепочки
-    middleware.use ::Redirect404ToHome::Middleware
-  end
+  # Добавляем наше middleware в цепочку, используя Rails.application.middleware
+  Rails.application.config.middleware.insert_after Rack::Sendfile, ::Redirect404ToHome::Middleware
 end
