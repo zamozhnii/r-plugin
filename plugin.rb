@@ -4,10 +4,8 @@
 # authors: Your Name
 # url: https://github.com/zamozhnii/r-plugin.git
 
-# enabled_site_setting :r-plugin_enabled
-
 after_initialize do
-  # Middleware для обработки ошибок 404
+  # Мы не будем изменять существующий массив middleware напрямую
   module ::Redirect404ToHome
     class Middleware
       def initialize(app)
@@ -29,9 +27,6 @@ after_initialize do
     end
   end
 
-  # Добавляем middleware в приложение Discourse
-  Discourse::Application.routes.append do
-    # Подключаем наш middleware
-    Rails.application.config.middleware.use ::Redirect404ToHome::Middleware
-  end
+  # Добавляем middleware в стек, не изменяя замороженный массив
+  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware if SiteSetting.redirect_404_to_home_enabled
 end
