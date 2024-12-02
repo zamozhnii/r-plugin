@@ -27,9 +27,9 @@ after_initialize do
     end
   end
 
-  # Добавляем middleware правильно, чтобы избежать ошибки с FrozenError
+  # Добавляем middleware в правильное место
   Rails.application.config.middleware.insert_before(
-    Rails::Rack::Logger,  # Место, куда вставить middleware
+    ActionDispatch::Static,  # Вставляем до обработки статических файлов
     ::Redirect404ToHome::Middleware
   )
 end
