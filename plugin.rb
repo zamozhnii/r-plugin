@@ -27,6 +27,6 @@ after_initialize do
     end
   end
 
-  # Добавляем middleware в цепочку
-  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware
+  # Добавляем middleware через Discourse::Application::Middleware
+  Discourse::Application::Middleware.add_middleware ::Redirect404ToHome::Middleware
 end
