@@ -1,2 +1,3 @@
-enable_r_plugin:
-  default: false
+plugins:
+  enable_r_plugin:
+    default: true
