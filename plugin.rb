@@ -4,10 +4,8 @@
 # authors: Your Name
 # url: https://github.com/zamozhnii/r_plugin.git
 
-enabled_site_setting :r_plugin_enabled
-
 after_initialize do
-  # Мы не будем изменять существующий массив middleware напрямую
+  # Создаем middleware для обработки ошибок 404
   module ::Redirect404ToHome
     class Middleware
       def initialize(app)
@@ -19,7 +17,7 @@ after_initialize do
 
         # Проверяем, является ли ошибка 404
         if status == 404
-          # Создаем редирект на главную страницу с кодом 301
+          # Если ошибка 404, делаем редирект на главную страницу с кодом 301
           return [301, { 'Location' => '/' }, ['Moved Permanently']]
         end
 
@@ -29,6 +27,6 @@ after_initialize do
     end
   end
 
-  # Добавляем middleware в стек, не изменяя замороженный массив
-  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware if SiteSetting.r_plugin_enabled
+  # Добавляем middleware всегда, без проверки настройки
+  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware
 end
