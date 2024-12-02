@@ -1,8 +1,8 @@
-# name: r-plugin
+# name: r_plugin
 # about: Redirects all 404 errors to the home page
 # version: 0.1
 # authors: Your Name
-# url: https://github.com/zamozhnii/r-plugin.git
+# url: https://github.com/zamozhnii/r_plugin.git
 
 after_initialize do
   # Мы не будем изменять существующий массив middleware напрямую
