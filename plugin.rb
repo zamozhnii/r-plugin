@@ -4,6 +4,8 @@
 # authors: Your Name
 # url: https://github.com/zamozhnii/r_plugin.git
 
+enabled_site_setting :r_plugin_enabled
+
 after_initialize do
   # Мы не будем изменять существующий массив middleware напрямую
   module ::Redirect404ToHome
