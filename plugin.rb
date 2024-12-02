@@ -15,19 +15,20 @@ after_initialize do
       def call(env)
         status, headers, response = @app.call(env)
 
-        # Проверяем, является ли ошибка 404
+        # Если ответ - 404, перенаправляем на главную страницу
         if status == 404
-          # Если ошибка 404, делаем редирект на главную страницу с кодом 301
           return [301, { 'Location' => '/' }, ['Moved Permanently']]
         end
 
-        # Если ошибка не 404, возвращаем исходный ответ
+        # Если это не ошибка 404, возвращаем исходный ответ
         [status, headers, response]
       end
     end
   end
 
-  # Добавляем middleware в цепочку до заморозки
-  # Используем Discourse::Application.middleware, чтобы вставить в правильный момент
-  Discourse::Application.middleware.use ::Redirect404ToHome::Middleware
+  # Используем Rack::Builder для добавления middleware в цепочку
+  Discourse::Application.routes.append do
+    # Вставляем наше middleware в конец цепочки
+    middleware.use ::Redirect404ToHome::Middleware
+  end
 end
