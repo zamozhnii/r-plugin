@@ -1,4 +1,4 @@
-r-plugin_enabled:
+r_plugin_enabled:
   default: true
   client: true
   description: "Enable redirect of all 404 errors to the home page."
