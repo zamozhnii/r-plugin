@@ -7,10 +7,10 @@
 after_initialize do
   # Перехватываем ошибки 404 и перенаправляем на главную страницу
   Discourse::Application.routes.append do
-    match "/404", to: redirect('/'), via: :all
+    match "/404", to: redirect('/', status: 301), via: :all
   end
 
   rescue_from ActionController::RoutingError do |_exception|
-    redirect_to("/")
+    redirect_to("/", status: 301)
   end
 end
