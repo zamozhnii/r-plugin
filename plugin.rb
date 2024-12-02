@@ -5,27 +5,12 @@
 # url: https://github.com/zamozhnii/r_plugin.git
 
 after_initialize do
-  # Создаём middleware, которое будет перехватывать ошибки 404
-  module ::Redirect404ToHome
-    class Middleware
-      def initialize(app)
-        @app = app
-      end
-
-      def call(env)
-        status, headers, response = @app.call(env)
-
-        # Если ошибка 404, перенаправляем на главную страницу
-        if status == 404
-          return [301, { 'Location' => '/' }, ['Moved Permanently']]
-        end
-
-        # Возвращаем оригинальный ответ, если это не ошибка 404
-        [status, headers, response]
-      end
-    end
+  # Перехватываем ошибки 404 и перенаправляем на главную страницу
+  Discourse::Application.routes.append do
+    match "/404", to: redirect('/'), via: :all
   end
 
-  # Вставляем middleware в конфигурацию Rails, чтобы обрабатывать 404 ошибки
-  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware
+  rescue_from ActionController::RoutingError do |_exception|
+    redirect_to("/")
+  end
 end
