@@ -1,10 +1,10 @@
-# name: redirect_404_to_home
+# name: r-plugin
 # about: Redirects all 404 errors to the home page
 # version: 0.1
 # authors: Your Name
-# url: https://github.com/yourusername/redirect_404_to_home
+# url: https://github.com/zamozhnii/r-plugin.git
 
-enabled_site_setting :redirect_404_to_home_enabled
+enabled_site_setting :r-plugin_enabled
 
 after_initialize do
   # Middleware для обработки ошибок 404
