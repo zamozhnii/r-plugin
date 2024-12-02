@@ -4,7 +4,7 @@
 # authors: Your Name
 # url: https://github.com/zamozhnii/r-plugin.git
 
-enabled_site_setting :r-plugin_enabled
+# enabled_site_setting :r-plugin_enabled
 
 after_initialize do
   # Middleware для обработки ошибок 404
