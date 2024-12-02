@@ -1,9 +1,5 @@
-plugins:
-  r_plugin:
-    enabled_site_setting: true
-
-  enable_r_plugin:
-    default: false
-    client: true
-    type: bool
-    description: "Enable or disable the custom 404 redirect to homepage"
+enable_r_plugin:
+  default: false
+  client: true
+  type: bool
+  description: "Enable or disable the custom 404 redirect to homepage"
