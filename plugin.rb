@@ -27,6 +27,7 @@ after_initialize do
     end
   end
 
-  # Добавляем middleware через Discourse::Application::Middleware
-  Discourse::Application::Middleware.add_middleware ::Redirect404ToHome::Middleware
+  # Добавляем middleware в цепочку до заморозки
+  # Используем Discourse::Application.middleware, чтобы вставить в правильный момент
+  Discourse::Application.middleware.use ::Redirect404ToHome::Middleware
 end
