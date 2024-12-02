@@ -27,9 +27,6 @@ after_initialize do
     end
   end
 
-  # Добавляем middleware в правильное место
-  Rails.application.config.middleware.insert_before(
-    ActionDispatch::Static,  # Вставляем до обработки статических файлов
-    ::Redirect404ToHome::Middleware
-  )
+  # Добавляем middleware в цепочку
+  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware
 end
