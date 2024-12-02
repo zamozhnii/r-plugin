@@ -28,5 +28,5 @@ after_initialize do
   end
 
   # Добавляем middleware в стек, не изменяя замороженный массив
-  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware if SiteSetting.redirect_404_to_home_enabled
+  Rails.application.config.middleware.use ::Redirect404ToHome::Middleware if SiteSetting.r-plugin_enabled
 end
